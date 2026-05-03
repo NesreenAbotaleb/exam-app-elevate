@@ -1,7 +1,6 @@
-<<<<<<< HEAD
+
 # Elevate
-Elevate React and Next bootcamp tasks
-=======
+
 # 🎓 Diploma Exam Platform
 
 A full-featured online examination system built with [Next.js](https://nextjs.org), designed to manage diplomas, enroll learners, and conduct timed exams — all from a clean, role-based interface.
@@ -142,4 +141,4 @@ EXAM-APP/
 | **Admin** | Full CRUD over diplomas, exams, and answers |
 
 ---
->>>>>>> 2c15f72 (auth/feature)
+
