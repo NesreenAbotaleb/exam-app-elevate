@@ -1,3 +1,4 @@
+// home page for diplomas section, with a welcome message and a link to the login page
 import Link from "next/link";
 export default function Home() {
   return (
