@@ -1,32 +1,23 @@
-import NextAuth from "next-auth"
-import { UserRole } from "./user"
-import {User as UserType} from "./user"
-import { User } from "next-auth"
-import { JWT } from "next-auth/jwt"
-
-
+// /src/types/next-auth.d.ts
+import "next-auth";
+import "next-auth/jwt";
+import { User as UserType } from "./user";
 
 declare module "next-auth" {
+    interface User {
+        user: UserType;
+        token: string;
+    }
 
-/**
- * The shape of the user object returned in the OAuth providers' `profile` callback,
- * or the second parameter of the `session` callback, when using a database.
- */
-interface User {
-    user: UserType;
-    token: token
+    interface Session {
+        user: UserType;
+        token: string;
+    }
 }
- 
-
-    type Session = UserType
-}
-
-
 
 declare module "next-auth/jwt" {
-//   interface JWT extends User {
-//     token: token;
-//   }
-
-    type JWT = User
+    interface JWT {
+        user: UserType;
+        token: string;
+    }
 }

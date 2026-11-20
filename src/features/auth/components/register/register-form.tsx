@@ -20,28 +20,11 @@ const RegisterForm = () => {
   // mutation
   const { mutate: register, isPending, error } = useRegister();
 
-  // step state
+  // states
   const [currentStep, setCurrentStep] = useState(0);
 
-  const goNext = () => setCurrentStep((prev) => prev + 1);
-  const goBack = () => setCurrentStep((prev) => prev - 1);
-
-  // sucess message state
   const [successMessage, setSuccessMessage] = useState("");
 
-
-  // handle final submit
-  const handleSubmit = (data: RegisterPayload) => {
-    register(data, {
-      onSuccess: () => {  
-        setSuccessMessage(data.message || "Registration successful!");
-        goNext();
-      },
-      onError: ()=> goBack(),
-    });
-  };
-
-  // form state
   const form = useForm<RegisterFields>({
     resolver: zodResolver(registerScheme),
     defaultValues: {
@@ -57,8 +40,29 @@ const RegisterForm = () => {
   });
 
 
+  // functions
+
+  
+  const goNext = () => setCurrentStep((prev) => prev + 1);
+  const goBack = () => setCurrentStep((prev) => prev - 1);
+
+  // submit handler for the final step to submit the registration data to the server
+
+  const handleSubmit = (data: RegisterPayload) => {
+    register(data, {
+      onSuccess: () => {
+        setSuccessMessage(data.message || "Registration successful!");
+        goNext();
+      },
+      onError: () => goBack(),
+    });
+  };
+
+
+
   return (
     <form className="flex w-full max-w-113  flex-col  gap-4">
+
       {/* Stepper  */}
 
       {currentStep > 0 && <Stepper current={currentStep + 1} />}
@@ -72,7 +76,13 @@ const RegisterForm = () => {
       {/* Register Form */}
 
       {/* email step*/}
-      {currentStep === 0 && <EmailStep form={form} onSuccess={goNext} setSuccessMessage={setSuccessMessage}/>}
+      {currentStep === 0 && (
+        <EmailStep
+          form={form}
+          onSuccess={goNext}
+          setSuccessMessage={setSuccessMessage}
+        />
+      )}
 
       {/* otp step */}
       {currentStep === 1 && (
@@ -85,7 +95,9 @@ const RegisterForm = () => {
       )}
 
       {/* user info step*/}
-      {currentStep === 2 && <UserInfoStep form={form} onSuccess={goNext} serverError={error}/>}
+      {currentStep === 2 && (
+        <UserInfoStep form={form} onSuccess={goNext} serverError={error} />
+      )}
 
       {/* password step*/}
       {currentStep === 3 && (
@@ -108,7 +120,6 @@ const RegisterForm = () => {
           <p className="text-sm text-white font-normal">{successMessage}</p>
         </div>
       )}
-    
     </form>
   );
 };

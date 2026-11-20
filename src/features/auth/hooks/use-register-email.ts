@@ -21,7 +21,7 @@ export default function useRegisterEmail() {
     },
   });
 
-  // ✅ Always return what components need
+
   return { mutate, isPending, isError, error , isSuccess , data};
 }
 

@@ -21,9 +21,12 @@ const EmailStep = ({ form, onSuccess, setSuccessMessage }: Props) => {
   // Mutation for sending OTP to email
   const { mutate, isPending, error, isError , data} = useRegisterEmail();
 
+  // functions
+
   // Handle submit
   const handleSubmit = async () => {
-    // Validate just this field before sending
+    
+    // Validate the email field before sending the OTP request
     const isValid = await validateStep(form, emailScheme, ["email"]);
     if (!isValid) return;
 

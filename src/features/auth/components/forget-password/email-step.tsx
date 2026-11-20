@@ -10,42 +10,47 @@ import { Input } from "@/shared/components/ui/input";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { ResetPasswordFields } from "../../types/auth";
 import { Button } from "@/shared/components/ui/button";
-import { Check, ChevronRight, CircleX } from "lucide-react";
+import { ChevronRight, CircleX } from "lucide-react";
 import useResetPasswordEmail from "../../hooks/use-reset-password-email";
 import { emailScheme } from "../../schemes/email.scheme";
 import { validateStep } from "@/shared/lib/utils/validate-step";
 
-type Props = {
+type EmailStepProps = {
   form: UseFormReturn<ResetPasswordFields>;
   onSuccess: () => void;
   setSuccessMessage: (message: string) => void;
+  getRedirectUrl: (email: string) => string; // was: redirectUrl: string
 };
 
-const EmailStep = ({ form, onSuccess, setSuccessMessage }: Props) => {
+const EmailStep = ({
+  form,
+  onSuccess,
+  setSuccessMessage,
+  getRedirectUrl,
+}: EmailStepProps) => {
   // Mutation for sending Link to email
-  const { mutate, isPending, error, isError , data} = useResetPasswordEmail();
+  const { mutate, isPending, error, isError } = useResetPasswordEmail();
 
-  // Handle submit
   const handleSubmit = async () => {
-    // Validate just this field before sending
     const isValid = await validateStep(form, emailScheme, ["email"]);
     if (!isValid) return;
 
-    // Send reset link to email
-    mutate(
-  { email: form.getValues("email") },
-  { onSuccess: (data) => {  
-      setSuccessMessage(data || "Reset password link sent!");
-      onSuccess();           
-  }},
+    const email = form.getValues("email");
 
-);
+    mutate(
+      { email, redirectUrl: getRedirectUrl(email) },
+      {
+        onSuccess: (data) => {
+          setSuccessMessage(data || "Reset password link sent!");
+          onSuccess();
+        },
+      },
+    );
   };
 
   return (
     <div className="flex flex-col gap-4">
       <FieldGroup>
-
         {/* Forget Password title */}
 
         <h2 className="font-inter text-3xl font-bold text-gray-800">
@@ -53,9 +58,9 @@ const EmailStep = ({ form, onSuccess, setSuccessMessage }: Props) => {
         </h2>
 
         {/* description */}
-              <FieldDescription className="text-[16px] text-gray-500">
-                Don’t worry, we will help you recover your account.
-              </FieldDescription>
+        <FieldDescription className="text-[16px] text-gray-500">
+          Don’t worry, we will help you recover your account.
+        </FieldDescription>
         <Controller
           control={form.control}
           name="email"
@@ -66,7 +71,6 @@ const EmailStep = ({ form, onSuccess, setSuccessMessage }: Props) => {
                 Email
               </FieldLabel>
 
-              
               {/* input */}
               <Input
                 // name="email"
@@ -113,8 +117,6 @@ const EmailStep = ({ form, onSuccess, setSuccessMessage }: Props) => {
           </p>
         </div>
       )}
-
-   
     </div>
   );
 };

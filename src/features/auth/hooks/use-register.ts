@@ -19,7 +19,7 @@ export default function useRegister() {
       const callbackUrl = new URLSearchParams(window.location.search).get("callbackUrl") || "/";
       location.href = callbackUrl;
 
-      console.log("Account Created", data);
+      // console.log("Account Created", data);
     }
   });
 }

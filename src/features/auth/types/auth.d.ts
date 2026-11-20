@@ -47,3 +47,14 @@ export interface ResetPasswordResponse {
     message: string;
     resetToken: string;
 }
+
+export interface ForgetPasswordBody {
+    email: string;
+    redirectUrl: string;
+}
+
+export interface ResetPasswordBody {
+  token: string;
+  newPassword: string;
+  confirmPassword: string;
+}
